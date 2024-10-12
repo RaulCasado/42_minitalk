@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:09:36 by racasado          #+#    #+#             */
-/*   Updated: 2024/10/13 00:00:32 by racasado         ###   ########.fr       */
+/*   Updated: 2024/10/13 00:07:02 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	handler_sigusr(int sig)
 {
-	char	c = 0;
+	static char	c = 0;
 	static int	bits = 0;
 
 	if (sig == SIGUSR1)
