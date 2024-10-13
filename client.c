@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:09:33 by racasado          #+#    #+#             */
-/*   Updated: 2024/10/12 23:57:59 by racasado         ###   ########.fr       */
+/*   Updated: 2024/10/13 14:19:24 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+volatile sig_atomic_t	g_received_ack = 0;
+
+void	ack_handler(int sig)
+{
+	(void)sig;
+	g_received_ack = 1;
+}
 
 size_t	ft_strlen(char *str)
 {
@@ -67,8 +75,10 @@ void	send_char(int pid, char c)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
+		while (!g_received_ack)
+			pause();
+		g_received_ack = 0;
 		c >>= 1;
-		usleep(100);
 		i++;
 	}
 }
@@ -92,6 +102,7 @@ int	main(int argc, char **argv)
 		write(2, "Usage: ./client [server_pid] [message]\n", 40);
 		return (1);
 	}
+	signal(SIGUSR1, ack_handler);
 	pid = ft_atoi(argv[1]);
 	if (pid <= 0)
 	{

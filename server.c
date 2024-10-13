@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:09:36 by racasado          #+#    #+#             */
-/*   Updated: 2024/10/13 00:07:02 by racasado         ###   ########.fr       */
+/*   Updated: 2024/10/13 14:26:06 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,41 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	handler_sigusr(int sig)
+volatile sig_atomic_t	g_client_pid = 0;
+
+void	handler_sigusr(int sig, siginfo_t *info, void *context)
 {
 	static char	c = 0;
 	static int	bits = 0;
 
+	(void)context;
+	g_client_pid = info->si_pid;
 	if (sig == SIGUSR1)
 		c |= (1 << bits);
 	bits++;
 	if (bits == 8)
 	{
 		if (c == '\0')
-		{
 			write(1, "\n", 1);
-		}
 		else
-		{
 			write(1, &c, 1);
-		}
 		c = 0;
 		bits = 0;
 	}
+	kill(g_client_pid, SIGUSR1);
 }
 
 int	main(void)
 {
+	struct sigaction	sa;
+
 	printf("Server PID: %d\n", getpid());
-	signal(SIGUSR1, handler_sigusr);
-	signal(SIGUSR2, handler_sigusr);
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handler_sigusr;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
-	{
 		pause();
-	}
 	return (0);
 }
