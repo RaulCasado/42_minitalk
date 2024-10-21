@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:09:33 by racasado          #+#    #+#             */
-/*   Updated: 2024/10/13 14:19:24 by racasado         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:15:39 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "../libft/libft.h"
 
 volatile sig_atomic_t	g_received_ack = 0;
 
@@ -21,47 +22,6 @@ void	ack_handler(int sig)
 {
 	(void)sig;
 	g_received_ack = 1;
-}
-
-size_t	ft_strlen(char *str)
-{
-	size_t	len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
-}
-
-int	ft_is_space(const char chr)
-{
-	return (chr == '\f' || chr == ' ' || chr == '\n' || chr == '\t'
-		|| chr == '\v' || chr == '\r');
-}
-
-int	ft_atoi(const char *nptr)
-{
-	int	i;
-	int	sign;
-	int	result;
-
-	i = 0;
-	sign = 1;
-	result = 0;
-	while (ft_is_space(nptr[i]))
-		i++;
-	if (nptr[i] == '-' || nptr[i] == '+')
-	{
-		if (nptr[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		result = (result * 10) + (nptr[i] - 48);
-		i++;
-	}
-	return (result * sign);
 }
 
 void	send_char(int pid, char c)

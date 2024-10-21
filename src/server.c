@@ -6,13 +6,15 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:09:36 by racasado          #+#    #+#             */
-/*   Updated: 2024/10/13 14:26:06 by racasado         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:15:45 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define _GNU_SOURCE
 #include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "../libft/libft.h"
 
 volatile sig_atomic_t	g_client_pid = 0;
 
