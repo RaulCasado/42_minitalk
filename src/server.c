@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:09:36 by racasado          #+#    #+#             */
-/*   Updated: 2024/10/21 11:15:45 by racasado         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:56:14 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,12 @@
 #include <unistd.h>
 #include "../libft/libft.h"
 
-volatile sig_atomic_t	g_client_pid = 0;
-
 void	handler_sigusr(int sig, siginfo_t *info, void *context)
 {
 	static char	c = 0;
 	static int	bits = 0;
 
 	(void)context;
-	g_client_pid = info->si_pid;
 	if (sig == SIGUSR1)
 		c |= (1 << bits);
 	bits++;
@@ -37,7 +34,7 @@ void	handler_sigusr(int sig, siginfo_t *info, void *context)
 		c = 0;
 		bits = 0;
 	}
-	kill(g_client_pid, SIGUSR1);
+	kill(info->si_pid, SIGUSR1);
 }
 
 int	main(void)
