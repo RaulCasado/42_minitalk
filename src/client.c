@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:09:33 by racasado          #+#    #+#             */
-/*   Updated: 2024/10/21 11:15:39 by racasado         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:04:49 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include "../libft/libft.h"
 
-volatile sig_atomic_t	g_received_ack = 0;
+static sig_atomic_t	g_received_ack = 0;
 
 void	ack_handler(int sig)
 {
